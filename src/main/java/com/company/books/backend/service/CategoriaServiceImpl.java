@@ -5,6 +5,9 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,25 +25,27 @@ public class CategoriaServiceImpl implements ICategoriaService{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public CategoriaResponseRest buscarCategorias() {
+	public ResponseEntity<CategoriaResponseRest> buscarCategorias() {
 		
 		log.info("inicio metodo buscarCategorias()");
 		
-		CategoriaResponseRest respose = new CategoriaResponseRest();
+		CategoriaResponseRest response = new CategoriaResponseRest();
 		
 		try {
 			List<Categoria> categoria = (List<Categoria>) categoriaDao.findAll();
 			
-			respose.getCategoriaResponse().setCategoria(categoria);
+			response.getCategoriaResponse().setCategoria(categoria);
 			
-			respose.setMetadata("Respuesta ok", "00", "Respuesta exitosa");
+			response.setMetadata("Respuesta ok", "00", "Respuesta exitosa");
 		} catch (Exception e) {
-			respose.setMetadata("Respuesta nok", "-1", "Respuesta incorrecta");
+			response.setMetadata("Respuesta nok", "-1", "Error al consultar categorias");
 			log.error("error al consultar categorias: ", e.getMessage());
 			e.getMessage();
+			
+			return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR); //devuelve error 500
 		}
 		
-		return respose;
+		return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK); //devuelve 200
 	}
 	
 
