@@ -47,6 +47,74 @@ public class CategoriaServiceImpl implements ICategoriaService{
 		
 		return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK); //devuelve 200
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseEntity<CategoriaResponseRest> buscarPorId(Long id) {
+		
+		log.info("inicio metodo buscarPorId()");
+		
+		CategoriaResponseRest response = new CategoriaResponseRest();
+		
+		List<Categoria> list = new ArrayList<>();
+		
+		try {
+		
+			Optional<Categoria> categoria = categoriaDao.findById(id);
+			
+			if (categoria.isPresent()) {
+				list.add(categoria.get());
+				response.getCategoriaResponse().setCategoria(list);
+				
+			} else {
+				log.error("Error en consulta categoria");
+				response.setMetadata("Respuesta nok", "-1", "Categoria no encontrada");
+				
+				return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.NOT_FOUND); //error 404 
+			}
+		} catch (Exception e) {
+			log.error("Error en consulta categoria");
+			response.setMetadata("Respuesta nok", "-1", "Error al consultar categoria");
+			
+			return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR); //error 500 
+		}
+		response.setMetadata("Respuesta ok", "00", "Respuesta exitosa");
+		return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK); //devuelve 200
+	}
+
+	@Override
+	@Transactional
+	public ResponseEntity<CategoriaResponseRest> crear(Categoria request) {
+		log.info("inicio metodo crear()");
+		
+		CategoriaResponseRest response = new CategoriaResponseRest();
+		
+		List<Categoria> list = new ArrayList<>();
+		
+		try {
+			
+			Categoria categoriaGuardada = categoriaDao.save(request);
+			
+			if (categoriaGuardada != null) {
+				list.add(categoriaGuardada);
+				response.getCategoriaResponse().setCategoria(list);
+			} else {
+				log.error("Error en guardar categoria");
+				response.setMetadata("Respuesta nok", "-1", "Categoria no guardada");
+				
+				return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.BAD_REQUEST); //error 400
+			}
+			
+		} catch (Exception e) {
+			log.error("Error en crear categoria");
+			response.setMetadata("Respuesta nok", "-1", "Error al crear categoria");
+			
+			return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR); //error 500 
+		}
+		
+		response.setMetadata("Respuesta ok", "00", "Categoria creada");
+		return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK); //devuelve 200
+	}
 	
 
 }
