@@ -12,4 +12,8 @@ public interface ICategoriaService {
 	public ResponseEntity<CategoriaResponseRest> buscarPorId(Long id);
 
 	public ResponseEntity<CategoriaResponseRest> crear(Categoria request);
+	
+	public ResponseEntity<CategoriaResponseRest> actualizar(Categoria request, Long id);
+	
+	public ResponseEntity<CategoriaResponseRest> eliminar(Long id);
 }
