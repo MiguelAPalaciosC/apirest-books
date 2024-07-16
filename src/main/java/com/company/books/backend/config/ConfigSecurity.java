@@ -15,12 +15,22 @@ public class ConfigSecurity {
 
 	@Bean
 	public InMemoryUserDetailsManager userDetailsManager() {
-		UserDetails miguel = User.builder().username("miguel").password("{noop}miguel123").roles("Empleado").build();
-
-		UserDetails agustin = User.builder().username("agustin").password("{noop}agustin123").roles("Empleado", "Jefe")
+		UserDetails miguel = User.builder()
+				.username("miguel")
+				.password("{noop}miguel123")
+				.roles("Empleado")
 				.build();
 
-		UserDetails edita = User.builder().username("edita").password("{noop}edita123").roles("Empleado", "Jefe")
+		UserDetails agustin = User.builder()
+				.username("agustin")
+				.password("{noop}agustin123")
+				.roles("Empleado", "Jefe")
+				.build();
+
+		UserDetails edita = User.builder()
+				.username("edita")
+				.password("{noop}edita123")
+				.roles("Empleado", "Jefe")
 				.build();
 
 		return new InMemoryUserDetailsManager(miguel, agustin, edita);
