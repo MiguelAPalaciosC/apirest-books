@@ -50,11 +50,16 @@ public class ConfigSecurity {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests(configure -> {
 			configure
-			.requestMatchers(HttpMethod.GET, "/v1/libros").hasRole("EMPLEADO")
-			.requestMatchers(HttpMethod.GET, "/v1/libros/**").hasRole("EMPLEADO")
-			.requestMatchers(HttpMethod.POST, "/v1/libros").hasRole("JEFE")
-			.requestMatchers(HttpMethod.PUT, "/v1/libros/**").hasRole("JEFE")
-			.requestMatchers(HttpMethod.DELETE, "/v1/libros/**").hasRole("JEFE");
+			.requestMatchers(HttpMethod.GET, "/v1/libros").hasRole("Empleado")
+			.requestMatchers(HttpMethod.GET, "/v1/libros/**").hasRole("Empleado")
+			.requestMatchers(HttpMethod.POST, "/v1/libros").hasRole("Jefe")
+			.requestMatchers(HttpMethod.PUT, "/v1/libros/**").hasRole("Jefe")
+			.requestMatchers(HttpMethod.DELETE, "/v1/libros/**").hasRole("Jefe")
+			.requestMatchers(HttpMethod.GET, "/v1/categorias").hasRole("Empleado")
+			.requestMatchers(HttpMethod.GET, "/v1/categorias/**").hasRole("Empleado")
+			.requestMatchers(HttpMethod.POST, "/v1/categorias").hasRole("Jefe")
+			.requestMatchers(HttpMethod.PUT, "/v1/categorias/**").hasRole("Jefe")
+			.requestMatchers(HttpMethod.DELETE, "/v1/libros/**").hasRole("Jefe");
 		});
 		
 		http.httpBasic(Customizer.withDefaults());
