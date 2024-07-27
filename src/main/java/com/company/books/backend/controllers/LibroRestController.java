@@ -1,6 +1,8 @@
 package com.company.books.backend.controllers;
 import com.company.books.backend.service.ILibroService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +26,7 @@ public class LibroRestController {
 	private ILibroService service;
 
 	@GetMapping("/libros")
+	@Operation(summary = "Lista todos los libros", description = "Retorna un listado de todos los libro registrados")
 	public ResponseEntity<LibroResponseRest> consultarLibros() {
 		ResponseEntity<LibroResponseRest> response = service.buscarLibros();
 		return response;
